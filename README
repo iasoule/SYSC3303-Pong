@@ -1,0 +1,10 @@
+Real-Time Concurrent Systems
+SYSC 3303 Pong Game
+
+This is a real-time multiplayer networked pong game. Following the MVC design 
+pattern, the model is a C process done under Xenomai RTOS. The view is written
+in Java (AWT) and controller is a C process. Windows and Linux machines can 
+connect to each other for users to play. Additionally we implemented an 
+external controller -- an Arduino microcontroller. With the microcontroller 
+user can control the pong bar by tilting the accelerometer.
+   
