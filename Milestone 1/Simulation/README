@@ -1,0 +1,95 @@
+							   README 
+						   Course: SYSC 3303
+						      Game: Pong 
+
+________
+|AUTHORS|
+_________ 	
+Michael Pang, Idris Soule 
+
+System Requirements
+Java 1.5 or higher
+
+How to play:
+
+In order to start the game. 
+First, press "add pong" from the menu bar at the top left corner.
+Second, Select the mode for the game "Single Player"/"Two player"
+Third, Press "Start" button to create the ball, once the ball appear, that means
+the game is ready to begin.
+Final, Press "Start" again, the game will be start.
+
+How to control the pong bar:
+For Single Player:
+To move the pong bar for the bottom bar, The left arrow "<-" on the keyboard will make
+the move to the left, and the right arrow "->" on the keyboard will 
+make the move to the right.
+
+For Two Player:
+The bottom bar will remain the same as single player. The top bar will be control by 
+"A" and "D" on the keyboard. "A" will make the move to right and "D" will make the move 
+to the left.
+
+How to reset the score:
+Press the reset button, the score will be reset.
+
+How to exit the game:
+Press the "exit" from the menu bar at the top left corner
+
+______________  Simulation
+______________
+
+
+As per the specifications simulation is also available of both the client and the server. 
+The files can be compiled by using make. Which will create two exectable processes, namely client and server.
+System Requirements: Linux Distribution and GCC 3.3.1 or greater.
+
+* Usage *
+In order to run and test these files, you must run the server before the client. 
+To initiate the server you will type ./server @ the prompt under a linux system. 
+For brevity ./server -h can be used to display how you can access other options.
+
+Similarly with the client the same can be done. This is done by ./client. The options
+here are more explicit than those of the server. Three such flags are available to use 
+while one (1) is mandatory [-i]. 
+
+Example: -- connecting to localhost and logging file
+
+prompt$ ./client -i 127.0.0.1 -l mylog.txt
+
+You would then be required to enter strings of data which will be sent to the game server. 
+Once "{EXIT}" is typed the client will gracefully quit, the data logged is now in mylog.txt.
+
+A more advanced example of the above with the ability to read commands from file 
+
+prompt$ ./client -i 127.0.0.1 -l mylog.txt -r cmdfile.txt
+
+Where cmdfile.txt is the file with the commands to be sent to the game server. 
+We have included this in the file for testing purposes. In the following we will take the liberty to explain the syntax.
+
+Syntax::
+	The file is made up of two types of commands either control or time. 
+
+-   Control consists of {START}, {RESET}, {EXIT}, {L1}, {R1}, {L2}, {R2}, {ADD}, {1UP}, {2UP}
+
+-   Time consists of (in BNF grammar)
+	digit ::= [0-9]
+    time_control ::= '['digit+('.')?(digit)*']'
+	This will cause simulation of network lag etc in seconds.
+
+An example:
+	{START}
+	{ADD}
+    {ADD}
+	{1UP}
+	{L1}
+	[1.253]
+	{R1}
+	[4.432]
+	{EXIT}
+	#END
+
+This will start the game, add 2 pongs -> select 1 player mode -> move P1 left -> simulate delay for 1.253s -> move P1 right -> simulate delay for 4.432s
+Finally exiting. The #END must be at the end of each file as this marks the end of the file. Note that while it is necessary to include #END in the file you need not always (or never) include {EXIT}. Simply this would be the effect of either 1. Waiting for data or 2. The ball moving about its algorithm and then coming to a halt.
+
+For further information on each run the file with argument -h and a usage will be displayed.	

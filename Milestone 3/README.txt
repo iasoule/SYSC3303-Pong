@@ -1,0 +1,34 @@
+		
+					README
+			
+				  SYSC 3303
+
+Idris Soule
+Michael Pang
+
+Milestone 3
+___________
+
+Caveat 
+As with the version usage follows that of the previous milestone (Milestone 2).
+The GUI must be run on windows because of the version of the JVM with RT/Fedora Linux.
+
+Usage:
+
+Usage is very trivial because our setup allows the average user to connect and setup. 
+One should start the view on a Windows machine and then proceed to run the model (Xenomai). 
+The model will take a command-line argument which is the ip address of the model. This is as follows
+./model -i 134.117.59.142 
+this would then connect the model to the machine with 134.117.59.142 i.e being the view. 
+
+Secondly the various players (1 or 2 exclusively) must connect to the model, as follows
+./clientsim -i 134.117.59.140
+this is (134.117.59.140) the ip address of the model once this is done the game can be started:
+
+To initiate game play the model will block until a player connects. Once a player connects the other 
+player (if any) has 8 seconds to connect or else the model will timeout and the initial connected player will 
+play against AI. 
+
+If two players then the model will wait for one of the player(s) to press <space> and then <enter>.
+<space> will add the pongs and <enter> will start the game. To quit the game only one or concurrently both players
+will type 'q' without the literal quotes of course. The game will end with the state viewable on the view.  

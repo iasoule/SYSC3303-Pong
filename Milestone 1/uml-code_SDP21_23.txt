@@ -1,0 +1,42 @@
+Controller->Controller: actionPerformed(ActionEvent e)
+note left of Controller
+    Start Command\nReceived
+end note 
+Controller->Model.Pong: model.getPong().start()
+Model.Pong->Model.Pong: addBall()
+Model.Pong->Thread: <<create Thread>>
+activate Thread
+Thread-->Model.Pong: <<Thread created>>
+Model.Pong->Thread: start()
+loop *
+     Thread->Thread: ballmove()
+     Thread->Thread: bounceDirection(opponent, ball.getRadius())
+end 
+note right of Model.Pong
+    Assuming 1 Player Mode
+end note
+
+---
+
+
+Controller->Controller: keyPressed(KeyEvent e)
+Controller->Controller: KeyPerformed(e, "KEY PRESSED: ")
+Controller->Controller: keyPerformedMove(keyString)
+alt 1 Player Mode
+   Controller->Model.Pong: model.getPong().move(keyString)
+   alt Illegal Move
+       Model.Pong->PongWidget: setLeftCorner(new Point(locationPointOfX,default_height))
+   else Legal Move
+       Model.Pong->PongPanel: pPanel.paintPongNotify(pongs[player].getLeftCorner().x, pongs[player].getLeftCorner().y, pongLength, pongs[player].getHeight())
+       PongPanel->PongPanel: repaint()
+   end
+else 2 Player Mode
+    Controller->Model.Pong: model.getPong().opponentMovement(leftTurn)
+    alt Illegal Opponent Move
+       Model.Pong->PongWidget: setLeftCorner(new Point(locationPointOfX,default_height))
+   else Legal Move
+       Model.Pong->PongPanel: pPanel.paintOpponentPongNotify(pongs[player].getLeftCorner().x, pongs[player].getLeftCorner().y, pongLength, pongs[player].getHeight())
+       PongPanel->PongPanel: repaint()
+end
+    
+

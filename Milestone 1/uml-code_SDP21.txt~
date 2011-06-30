@@ -1,0 +1,17 @@
+Controller->Controller: actionPerformed(ActionEvent e)
+note left of Controller
+    Start Command\nReceived
+end note 
+Controller->Model.Pong: model.getPong().start()
+Model.Pong->Model.Pong: addBall()
+Model.Pong->Thread: <<create Thread>>
+activate Thread
+Thread-->Model.Pong: <<Thread created>>
+Model.Pong->Thread: start()
+loop *
+     Thread->Thread: ballmove()
+     Thread->Thread: bounceDirection(opponent, ball.getRadius())
+end 
+note right of Model.Pong
+    Assuming 1 Player Mode
+end note

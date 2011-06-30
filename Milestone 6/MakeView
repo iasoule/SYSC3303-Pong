@@ -1,0 +1,10 @@
+#Makefile for the View 
+# to be used with ** GCJ **
+
+#Usage: $ make -f MakeView
+
+all:
+    gcj --main=View View.java -o View
+
+clean:
+    rm View

@@ -1,0 +1,106 @@
+Simulator->GameLauncher: connect(sock,(struct sockaddr *) &echoserver, sizeof(echoserver))
+Simulator->Simulator: recv(sock,buffer,len,0)
+Simulator->Model: <<new socket>> sock2
+Simulator->Simulator: fork()
+Simulator->Model: connect(sock2,(struct sockaddr *) &echoserver, sizeof(echoserver))
+alt stream = stdin
+loop buffer != 'q'
+Simulator->Simulator: buffer = getche()
+Simulator->Model: send(sock2,buffer,len,0)
+end
+else stream != stdin
+loop while not EOF
+Simulator->Simulator: line = parse_line()
+Simulator->Model: send(sock2, line, len, 0)
+end
+Simulator->Simulator: closeall()
+
+
+Model->Model: signal(SIGKILL, cleanup)
+Model->BallThread: rt_task_spawn(ballThread)
+activate BallThread
+loop *
+BallThread->BallThread: ballmove()
+BallThread->View: send()
+alt AI Mode
+BallThread->BallThread: opponentMove(AIGenerate())
+BallThread->BallThread: send()
+else PlayerMode
+BallThread->BallThread: bounceDirectionPlayer()
+end
+BallThread->BallThread: rt_task_sleep(SLEEP_TIME)
+end
+Model->RecvTask: rt_task_spawn(recvThread[0,1])
+activate RecvTask
+loop *
+RecvTask->Simulator: recv()
+opt 
+RecvTask->RecvTask: validate_command()
+end
+opt
+RecvTask->Model: kill(mThreadm SIGKILL)
+end
+end
+Model->Model: rt_mutex_create(txMutex([0..2])
+Model->Model: bind()
+Model->Model: socket() <<new server socket>>
+loop *
+alt i > 1 || i < 1 && !issuedStart
+close(clientSock)
+note right of Model: Reject addn'l players
+else connected player
+Model->Model: rt_task_spawn(alarmTask)
+Model->View: connect(viewSocket)
+Model->Model: rt_mutex_acquire(autoStart)
+note over Model: Critical Section
+Model->Model: rt_mutex_release(autoStart)
+end 
+Model->Model: rt_task_join(recvThread[0..1])
+
+
+
+
+
+
+    UPDATED
+    Model->Model: signal(SIGKILL, cleanup)
+Model->BallThread: rt_task_spawn(ballThread)
+activate BallThread
+loop *
+BallThread->BallThread: ballmove()
+BallThread->View: send()
+alt AI Mode
+BallThread->BallThread: opponentMove(AIGenerate())
+BallThread->BallThread: send()
+else PlayerMode
+BallThread->BallThread: bounceDirectionPlayer()
+end
+BallThread->BallThread: rt_task_sleep(SLEEP_TIME)
+end
+Model->RecvTask: rt_task_spawn(recvThread[0,1])
+activate RecvTask
+loop *
+RecvTask->Simulator: recv()
+opt 
+RecvTask->RecvTask: validate_command()
+end
+opt
+RecvTask->Model: kill(mThreadm SIGKILL)
+end
+end
+Model->Model: rt_mutex_create(txMutex([0..2])
+Model->Model: bind()
+Model->Model: socket() <<new server socket>>
+loop *
+alt i > 1 || i < 1 && !issuedStart
+Model->Model: close(clientSock)
+note right of Model: Reject addn'l players.
+else connected player
+Model->Model: rt_task_spawn(alarmTask)
+Model->View: connect(viewSocket)
+Model->Model: rt_mutex_acquire(autoStart)
+note over Model: Critical Section
+Model->Model: rt_mutex_release(autoStart)
+end 
+end
+Model->Model: rt_task_join(recvThread[0..1])

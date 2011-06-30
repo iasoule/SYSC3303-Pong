@@ -1,0 +1,14 @@
+Proposal for re-use on another Game
+
+Idris Soule
+Michael Pang
+
+In general this game is based heavily on message passing. This message passing style allows for the game to fit many other game models.
+One such game which comes to mind is the game of tic-tac-toe. Why tic-tac-toe? The derivation from pong to the aforementioned game is quite
+trival. We say that it is trivial because of design patterns seen in Software Engineering practice. The pattern of common use in Model-View-Controller,
+splitting each class to a single point of use. The view would only need to be remodeled in Java to provide graphical interface for "noughts and crosses",
+controller and model need to be slightly because of the logic interface - if one could say. 
+
+Given our design we have modeled it with a generic type of implementation which we believe is a powerful concept in abstraction. In the model the message passing would not change all that would change is re-working of the score and movement placement message to the view. Controller would encompase either a mouse listener which is trivial to implement or a keyboard listener which would map various keys to positions on the board.
+
+In conclusion the MVC pattern scales very well. If written succintly and reasoned about in a manner of prototyping abstract implemenations this greatly extends the models use. By using TCP sockets we release machine and hardware dependence i.e RISC and CISC machine can "talk" to each other simultaneously without know nay difference.  
